@@ -151,11 +151,17 @@ iris.then(function(data) {
             return {q1, median, q3, iqr};
         };
 
+        // Roll up the data by species to calculate quartile information for each group.
+        // 'd3.rollup' groups the data based on the 'species' key and applies the 'rollupFunction' 
+        // to compute q1, median, q3, and IQR (Interquartile Range) for each species.
         const quartilesBySpecies = d3.rollup(data, rollupFunction, d => d.Species);
 
+        // Iterate over each species group to plot its box on the boxplot.
+        // For each species, 'x' represents the position of the species along the x-axis.
+        // 'boxWidth' defines how wide each box will be, based on the bandwidth of the x-axis scale.
         quartilesBySpecies.forEach((quartiles, species) => {
-            const x = xScale(species);
-            const boxWidth = xScale.bandwidth();
+            const x = xScale(species); // Calculate the x-position for the current species.
+            const boxWidth = xScale.bandwidth(); // Get the width of the box based on the x-axis scale.
 
             // Draw vertical lines
             svg.append("line")
